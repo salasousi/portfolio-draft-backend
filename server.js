@@ -13,6 +13,8 @@ const express = require("express");
 const app = express();
 // import mongoose
 const mongoose = require("mongoose");
+// import models
+const Projects = require('./models/projects');
 // import middlware
 const cors = require("cors");
 const morgan = require("morgan");
@@ -31,17 +33,6 @@ mongoose.connection
     .on("close", () => console.log("You are disconnected from mongoose"))
     .on("error", (error) => console.log(error));
 
-///////////////////////////////
-// MODELS
-////////////////////////////////
-const ProjectSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    git: String,
-    live: String,
-});
-
-const Projects = mongoose.model("Projects", ProjectSchema);
 
 ///////////////////////////////
 // MiddleWare
@@ -49,6 +40,7 @@ const Projects = mongoose.model("Projects", ProjectSchema);
 app.use(cors()); // to prevent cors errors, open access to all origins
 app.use(morgan("dev")); // logging
 app.use(express.json()); // parse json bodies
+app.use(express.urlencoded({ extended: true })); //access to req.body
 
 ///////////////////////////////
 // ROUTES
@@ -61,7 +53,7 @@ app.get("/", (req, res) => {
 // PROJECT INDEX ROUTE
 app.get("/projects", async (req, res) => {
     try {
-        // send all people
+        // send all projects
         res.json(await Projects.find({}));
     } catch (error) {
         //send error
