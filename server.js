@@ -58,6 +58,7 @@ app.get("/projects", async (req, res) => {
     } catch (error) {
         //send error
         res.status(400).json(error);
+        console.log('error: ', error);
     }
 });
 
@@ -69,8 +70,35 @@ app.post("/projects", async (req, res) => {
     } catch (error) {
         //send error
         res.status(400).json(error);
+        console.log('error: ', error);
     }
 });
+
+// PROJECT UPDATE ROUTE
+app.put("/projects/:id", async (req, res) => {
+    try{
+         res.json(await Projects.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        ));
+    } catch (error) {
+         //send error
+         res.status(400).json(error);
+         console.log('error: ', error);
+    }
+});
+
+// PROJECT DELETE ROUTE
+// app.delete("/projects/:id", async (req, res) => {
+//     try{
+//          res.json(await Projects.findByIdAndDelete(req.params.id));
+//     } catch (error) {
+//          //send error
+//          res.status(400).json(error);
+//          console.log('error: ', error);
+//     }
+// });
 
 
 
